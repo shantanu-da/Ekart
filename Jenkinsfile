@@ -31,13 +31,13 @@ pipeline {
         }
 
         stage('Sonarqube') {
-            steps {
-                withCredentials([string(credentialsId: 'sonarQube-token', variable: 'sonarToken')]) {
-                    withSonarQubeEnv('sonar-server') {
-                        sh """$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Shopping-Cart \
-                            -Dsonar.java.binaries=. \
-                            -Dsonar.projectKey=Shopping-Cart \
-                            -Dsonar.login=${sonarToken}"""
+      steps {
+        withCredentials([string(credentialsId: 'sonarQube-token', variable: 'sonarToken')]) {
+            withSonarQubeEnv('SonarQube Scanner') {
+                sh """$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Shopping-Cart \
+                    -Dsonar.java.binaries=. \
+                    -Dsonar.projectKey=Shopping-Cart \
+                    -Dsonar.login=$sonarToken"""
                     }
                 }
             }
