@@ -5,48 +5,50 @@ pipeline {
         maven 'maven3'
         // Add SonarScanner tool
     }
-    
+
     environment {
         SCANNER_HOME = tool 'sonar-scanner'
     }
-    
+
     stages {
         stage('Git Checkout') {
             steps {
                 git branch: 'main', changelog: false, credentialsId: '15fb69c3-3460-4d51-bd07-2b0545fa5151', poll: false, url: 'https://github.com/shantanudatarkar/Ekart.git'
             }
         }
-        
+
         stage('COMPILE') {
             steps {
                 sh "mvn clean compile -DskipTests=true"
             }
         }
-        
+
         stage('OWASP Scan') {
             steps {
                 dependencyCheck additionalArguments: '--scan ./ ', odcInstallation: 'DP'
                 dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
             }
         }
-        
+
         stage('Sonarqube') {
             steps {
-                withCredentials([string(credentialsId: 'sonarQube-token', variable: 'sonar-server')]) {
-                withSonarQubeEnv('sonar-server') {
-}                   sh """$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Shopping-Cart \
-                        -Dsonar.java.binaries=. \
-                        -Dsonar.projectKey=Shopping-Cart"""
-               }
+                withCredentials([string(credentialsId: 'sonarQube-token', variable: 'sonarToken')]) {
+                    withSonarQubeEnv('sonar-server') {
+                        sh """$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Shopping-Cart \
+                            -Dsonar.java.binaries=. \
+                            -Dsonar.projectKey=Shopping-Cart \
+                            -Dsonar.login=${sonarToken}"""
+                    }
+                }
             }
         }
-        
+
         stage('Build') {
             steps {
                 sh "mvn clean package -DskipTests=true"
             }
         }
-        
+
         stage('Docker Build & Push') {
             steps {
                 script {
