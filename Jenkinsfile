@@ -30,15 +30,19 @@ pipeline {
             }
         }
 
-        stage('Sonarqube') {
-            steps {
-                withCredentials([string(credentialsId: 'sonarQube-token', variable: 'sonarToken')]) {
-                    withSonarQubeEnv('SonarQube Scanner') {
-                        sh '''/var/lib/jenkins/tools/hudson.plugins.sonar.MsBuildSQRunnerInstallation/sonar-scanner/bin/sonar-scanner \
-                               -Dsonar.projectName=Shopping-Cart \
-                               -Dsonar.java.binaries=. \
-                               -Dsonar.projectKey=Shopping-Cart \
-                               -Dsonar.login=${SONAR_TOKEN}'''
+       stage('Sonarqube') {
+    steps {
+        script {
+            echo "Jenkins Home: ${JENKINS_HOME}"
+            echo "SonarScanner Installation: ${tool 'SonarQube Scanner'}"
+            sh "ls -la ${tool 'SonarQube Scanner'}/bin/"
+            withCredentials([string(credentialsId: 'sonarQube-token', variable: 'sonarToken')]) {
+                withSonarQubeEnv('SonarQube Scanner') {
+                    sh """${tool 'SonarQube Scanner'}/bin/sonar-scanner \
+                           -Dsonar.projectName=Shopping-Cart \
+                           -Dsonar.java.binaries=. \
+                           -Dsonar.projectKey=Shopping-Cart \
+                           -Dsonar.login=${SONAR_TOKEN}"""
                     }
                 }
             }
