@@ -1,13 +1,14 @@
 pipeline {
     agent any
+
     tools {
         jdk 'jdk11'
         maven 'maven3'
-        // Add SonarScanner tool
+        sonarQube 'SonarQube Scanner'
     }
 
     environment {
-        SCANNER_HOME = tool 'sonar-scanner'
+        SCANNER_HOME = tool 'SonarQube Scanner'
     }
 
     stages {
@@ -42,9 +43,13 @@ pipeline {
                                    -Dsonar.projectName=Shopping-Cart \
                                    -Dsonar.java.binaries=. \
                                    -Dsonar.projectKey=Shopping-Cart \
-                                   -Dsonar.login=${SONAR_TOKEN}"""
+                                   -Dsonar.login=${sonarToken}"""
                         }
                     }
+                    
+                    // Add more debugging information if needed
+                    sh "ls -la ${WORKSPACE}"
+                    sh "cat ${WORKSPACE}/sonar-scanner-*.log"
                 }
             }
         }
