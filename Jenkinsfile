@@ -7,8 +7,8 @@ pipeline {
         sonarqube 'sonar-scanner'
     }
     
-    environment{
-        SCANNER_HOME= tool 'sonar-scanner'
+    environment {
+        SCANNER_HOME = tool 'sonar-scanner'
     }
     
     stages {
@@ -33,10 +33,10 @@ pipeline {
         
         stage('Sonarqube') {
             steps {
-                withSonarQubeEnv('sonar-server'){
-                   sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Shopping-Cart \
-                   -Dsonar.java.binaries=. \
-                   -Dsonar.projectKey=Shopping-Cart '''
+                withSonarQubeEnv('sonar-server') {
+                   sh """$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Shopping-Cart \
+                        -Dsonar.java.binaries=. \
+                        -Dsonar.projectKey=Shopping-Cart"""
                }
             }
         }
@@ -49,9 +49,8 @@ pipeline {
         
         stage('Docker Build & Push') {
             steps {
-                script{
+                script {
                     withDockerRegistry(credentialsId: '2fe19d8a-3d12-4b82-ba20-9d22e6bf1672', toolName: 'docker') {
-                        
                         sh "docker build -t shopping-cart -f docker/Dockerfile ."
                         sh "docker tag  shopping-cart adijaiswal/shopping-cart:latest"
                         sh "docker push adijaiswal/shopping-cart:latest"
@@ -59,7 +58,5 @@ pipeline {
                 }
             }
         }
-        
-        
     }
 }
