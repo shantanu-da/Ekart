@@ -4,7 +4,7 @@ pipeline {
         jdk 'jdk11'
         maven 'maven3'
         // Add SonarScanner tool
-        sonarqube 'sonar-scanner'
+       sonarqubeScanner 'sonar-scanner' // Corrected tool type
     }
     
     environment {
