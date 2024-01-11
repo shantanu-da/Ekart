@@ -31,13 +31,14 @@ pipeline {
         }
 
         stage('Sonarqube') {
-      steps {
-        withCredentials([string(credentialsId: 'sonarQube-token', variable: 'sonarToken')]) {
-            withSonarQubeEnv('SonarQube Scanner') {
-                sh """$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Shopping-Cart \
-                    -Dsonar.java.binaries=. \
-                    -Dsonar.projectKey=Shopping-Cart \
-                    -Dsonar.login=$sonarToken"""
+            steps {
+                withCredentials([string(credentialsId: 'sonarQube-token', variable: 'sonarToken')]) {
+                    withSonarQubeEnv('SonarQube Scanner') {
+                        sh '''/var/lib/jenkins/tools/hudson.plugins.sonar.MsBuildSQRunnerInstallation/sonar-scanner/bin/sonar-scanner \
+                               -Dsonar.projectName=Shopping-Cart \
+                               -Dsonar.java.binaries=. \
+                               -Dsonar.projectKey=Shopping-Cart \
+                               -Dsonar.login=${SONAR_TOKEN}'''
                     }
                 }
             }
