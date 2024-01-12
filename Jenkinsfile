@@ -9,16 +9,18 @@ pipeline {
                 sh 'java -version'
             }
         }
+    }
 
-        tools {
-            jdk 'jdk18'
-            maven 'maven3'
-        }
+    tools {
+        jdk 'jdk18'
+        maven 'maven3'
+    }
 
-        environment {
-            SCANNER_HOME = tool 'SonarQube Scanner'
-        }
+    environment {
+        SCANNER_HOME = tool 'SonarQube Scanner'
+    }
 
+    stages {
         stage('Git Checkout') {
             steps {
                 git branch: 'main', changelog: false, credentialsId: '15fb69c3-3460-4d51-bd07-2b0545fa5151', poll: false, url: 'https://github.com/shantanudatarkar/Ekart.git'
