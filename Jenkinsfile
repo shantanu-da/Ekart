@@ -59,10 +59,11 @@ pipeline {
                 script {
                     // Docker stage uses the default JDK (jdk17)
                         withCredentials([usernameColonPassword(credentialsId: 'Dockerhub', variable: 'Dockerhub')]) {
-                        sh "docker build -t shopping-cart -f docker/Dockerfile ."
-                        sh "docker tag  shopping-cart adijaiswal/shopping-cart:latest"
-                        sh "docker push adijaiswal/shopping-cart:latest"
-                    }
+                        sh "docker build -t shan123456/docker_demo ."
+                        sh "docker tag shan123456/docker_demo:${buildNumber} shan123456/docker_demo:latest"
+                        sh "docker login -u $DOCKERHUB_USR -p $DOCKERHUB_PSW"
+                        sh "docker push shan123456/docker_demo:${buildNumber}"
+                        sh "docker push shan123456/docker_demo:latest"
                 }
             }
         }
