@@ -57,11 +57,10 @@ pipeline {
             steps {
                 script {
                     // Docker stage uses the default JDK (jdk17)
-                      withCredentials([usernameColonPassword(credentialsId: 'Dockerhub_login', variable: 'dockerhub_credetials')]) {
+                        withCredentials([usernamePassword(credentialsId: 'Dockerhub_login', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
                         def buildNumber = env.BUILD_NUMBER ?: 'latest'
                         sh "docker build -t shan123456/docker_demo -f docker/Dockerfile ."
-                        sh "docker tag shan123456/docker_demo:latest" 
-                        sh "docker tag shan123456/docker_demo:${buildNumber}"
+                        sh "docker tag shan123456/docker_demo:latest shan123456/docker_demo:${buildNumber}"
                         sh "docker push shan123456/docker_demo:${buildNumber}"
                         sh "docker push shan123456/docker_demo:latest"
                     }
