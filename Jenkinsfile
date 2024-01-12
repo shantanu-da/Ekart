@@ -39,7 +39,7 @@ pipeline {
             }
             steps {
                 withCredentials([string(credentialsId: 'sonarQube-token', variable: 'sonarQube')]) {
-                    sh 'mvn sonar:sonar -Dsonar.login=$sonarQube -Dsonar.host.url=${SONAR_URL}'
+                    sh 'mvn sonar:sonar -sonar.login=$sonarQube -sonar.host.url=${SONAR_URL}'
                 }
             }
         }
