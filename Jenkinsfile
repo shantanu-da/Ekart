@@ -34,12 +34,19 @@ pipeline {
         }
 
         stage('Static Code Analysis') {
-            environment {
-                SONAR_URL = "http://52.63.226.147:9000"
-            }
-            steps {
-                withCredentials([string(credentialsId: 'sonarQube-token', variable: 'sonarQube')]) {
-                    sh 'mvn sonar:sonar -sonar.login=$sonarQube -sonar.host.url=${SONAR_URL}'
+    environment {
+        SONAR_URL = "http://52.63.226.147:9000"
+    }
+    steps {
+        script {
+            def sonarQubeToken = credentials('sonarQube-token').password
+
+            // Add debugging information
+            echo "SonarQube Token: ${sonarQubeToken}"
+
+            // Run SonarQube analysis
+            sh "mvn sonar:sonar -Dsonar.login=${sonarQubeToken} -Dsonar.host.url=${SONAR_URL}"
+
                 }
             }
         }
