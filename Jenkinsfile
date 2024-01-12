@@ -58,7 +58,7 @@ pipeline {
                 script {
                     // Docker stage uses the default JDK (jdk17)
                     withCredentials([usernameColonPassword(credentialsId: 'Dockerhub', variable: 'Dockerhub')]) {
-                        sh "docker build -t shan123456/docker_demo ."
+                        sh "docker build -t shan123456/docker_demo -f docker/Dockerfile ."
                         sh "docker tag shan123456/docker_demo:${buildNumber} shan123456/docker_demo:latest"
                         sh "docker login -u $DOCKERHUB_USR -p $DOCKERHUB_PSW"
                         sh "docker push shan123456/docker_demo:${buildNumber}"
