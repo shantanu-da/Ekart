@@ -4,7 +4,7 @@ pipeline {
     tools {
         jdk 'jdk11'
         maven 'maven3'
-        sonarScanner 'SonarQube Scanner'
+        sonarQube 'SonarQube Scanner'
     }
 
     environment {
@@ -46,6 +46,9 @@ pipeline {
                                 -Dsonar.login=${sonarToken}"""
                         }
                     }
+                    // Add more debugging information if needed
+                    sh "ls -la ${WORKSPACE}"
+                    sh "cat ${WORKSPACE}/sonar-scanner-*.log"
                 }
             }
         }
