@@ -59,8 +59,8 @@ pipeline {
                 script {
                     // Docker stage uses the default JDK (jdk17)
                         withCredentials([usernameColonPassword(credentialsId: 'Dockerhub', variable: 'Dockerhub')]) {
-                        sh "sudo usermod -aG docker jenkins"
-                        sh"sudo systemctl restart docker"
+                        sh " usermod -aG docker jenkins"
+                        sh "systemctl restart docker"
                         sh "docker build -t shopping-cart -f docker/Dockerfile ."
                         sh "systemctl start docker"
                         sh "docker tag  shopping-cart adijaiswal/shopping-cart:latest"
