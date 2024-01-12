@@ -9,7 +9,6 @@ pipeline {
 
     environment {
         SCANNER_HOME = tool 'SonarQube Scanner'
-        SONAR_URL = "http://52.63.226.147:9000"
     }
 
     stages {
@@ -35,14 +34,15 @@ pipeline {
         }
 
         stage('Static Code Analysis') {
+            environment {
+                SONAR_URL = "http://52.63.226.147:9000"
+            }
             steps {
                 withCredentials([string(credentialsId: 'sonarQube-token', variable: 'sonarQube')]) {
-                    sh "mvn sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=${SONAR_URL}"
+                    sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=${SONAR_URL}'
                 }
             }
         }
-
-        // Continue with other stages...
 
         stage('Build') {
             steps {
