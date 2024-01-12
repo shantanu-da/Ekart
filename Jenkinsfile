@@ -62,7 +62,7 @@ pipeline {
                 
                 sh "docker build -t shan123456/docker_demo -f docker/Dockerfile ."
                 sh "docker tag shan123456/docker_demo:latest shan123456/docker_demo:${buildNumber}"
-                sh "docker login -u $Dockerhub_USR -p $DOCKERHUB_PSW"
+                sh "docker login -u $Dockerhub -p $Dockerhub_PSW"
                 sh "docker push shan123456/docker_demo:${buildNumber}"
                 sh "docker push shan123456/docker_demo:latest"
                     }
