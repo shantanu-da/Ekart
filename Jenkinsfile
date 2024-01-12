@@ -31,19 +31,20 @@ pipeline {
         }
 
         stage('Sonarqube') {
-    steps {
-        script {
-            echo "Jenkins Home: ${JENKINS_HOME}"
-            echo "SonarScanner Installation: ${tool 'SonarQube Scanner'}"
-            sh "ls -la ${tool 'SonarQube Scanner'}/bin/"
-            withCredentials([string(credentialsId: 'sonarQube-token', variable: 'sonarToken')]) {
-                withEnv(["JAVA_HOME=${tool 'jdk11'}", "PATH=${tool 'jdk11'}/bin:${env.PATH}"]) {
-                    withSonarQubeEnv('SonarQube Scanner') {
-                        sh """${tool 'SonarQube Scanner'}/bin/sonar-scanner \
-                            -Dsonar.projectName=Shopping-Cart \
-                            -Dsonar.java.binaries=. \
-                            -Dsonar.projectKey=Shopping-Cart \
-                            -Dsonar.login=${sonarToken}"""
+            steps {
+                script {
+                    echo "Jenkins Home: ${JENKINS_HOME}"
+                    echo "SonarScanner Installation: ${tool 'SonarQube Scanner'}"
+                    sh "ls -la ${tool 'SonarQube Scanner'}/bin/"
+                    withCredentials([string(credentialsId: 'sonarQube-token', variable: 'sonarToken')]) {
+                        withEnv(["JAVA_HOME=${tool 'jdk11'}", "PATH=${tool 'jdk11'}/bin:${env.PATH}"]) {
+                            withSonarQubeEnv('SonarQube Scanner') {
+                                sh """${tool 'SonarQube Scanner'}/bin/sonar-scanner \
+                                    -Dsonar.projectName=Shopping-Cart \
+                                    -Dsonar.java.binaries=. \
+                                    -Dsonar.projectKey=Shopping-Cart \
+                                    -Dsonar.login=${sonarToken}"""
+                            }
                         }
                     }
                     // Add more debugging information if needed
