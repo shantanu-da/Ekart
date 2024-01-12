@@ -60,7 +60,8 @@ pipeline {
                       withCredentials([usernameColonPassword(credentialsId: 'Dockerhub_login', variable: 'dockerhub_credetials')]) {
                         def buildNumber = env.BUILD_NUMBER ?: 'latest'
                         sh "docker build -t shan123456/docker_demo -f docker/Dockerfile ."
-                        sh "docker tag shan123456/docker_demo:latest shan123456/docker_demo:${buildNumber}"
+                        sh "docker tag shan123456/docker_demo:latest" 
+                        sh "docker tag shan123456/docker_demo:${buildNumber}"
                         sh "docker push shan123456/docker_demo:${buildNumber}"
                         sh "docker push shan123456/docker_demo:latest"
                     }
