@@ -39,6 +39,7 @@ pipeline {
             }
             steps {
                 withCredentials([string(credentialsId: 'sonarQube-token', variable: 'sonarQube')]) {
+                    echo "SonarQube Token: ${sonarQube}"
                     sh 'mvn sonar:sonar -Dsonar.login=$sonarQube -Dsonar.host.url=${SONAR_URL}'
 
                 }
