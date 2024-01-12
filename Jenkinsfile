@@ -57,7 +57,7 @@ pipeline {
             steps {
                 script {
                     // Docker stage uses the default JDK (jdk17)
-                    withDockerRegistry(credentialsId: '2fe19d8a-3d12-4b82-ba20-9d22e6bf1672', toolName: 'docker') {
+                        withCredentials([usernameColonPassword(credentialsId: 'Dockerhub', variable: 'Dockerhub')]) {
                         sh "docker build -t shopping-cart -f docker/Dockerfile ."
                         sh "docker tag  shopping-cart adijaiswal/shopping-cart:latest"
                         sh "docker push adijaiswal/shopping-cart:latest"
