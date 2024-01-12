@@ -42,7 +42,6 @@ pipeline {
                 withCredentials([string(credentialsId: 'sonarQube-token', variable: 'sonarQube')]) {
                     echo "SonarQube Token: ${sonarQube}"
                     sh 'mvn sonar:sonar -Dsonar.login=$sonarQube -Dsonar.host.url=${SONAR_URL}'
-
                 }
             }
         }
@@ -58,12 +57,13 @@ pipeline {
             steps {
                 script {
                     // Docker stage uses the default JDK (jdk17)
-                        withCredentials([usernameColonPassword(credentialsId: 'Dockerhub', variable: 'Dockerhub')]) {
+                    withCredentials([usernameColonPassword(credentialsId: 'Dockerhub', variable: 'Dockerhub')]) {
                         sh "docker build -t shan123456/docker_demo ."
                         sh "docker tag shan123456/docker_demo:${buildNumber} shan123456/docker_demo:latest"
                         sh "docker login -u $DOCKERHUB_USR -p $DOCKERHUB_PSW"
                         sh "docker push shan123456/docker_demo:${buildNumber}"
                         sh "docker push shan123456/docker_demo:latest"
+                    }
                 }
             }
         }
