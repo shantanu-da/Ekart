@@ -1,6 +1,16 @@
 pipeline {
     agent any
 
+    stages {
+        stage('Check JAVA_HOME and PATH') {
+            steps {
+                sh 'echo $JAVA_HOME'
+                sh 'echo $PATH'
+                sh 'java -version'
+
+            }
+        }
+    
     tools {
         jdk 'jdk11'
         maven 'maven3'
