@@ -5,6 +5,7 @@ pipeline {
         // Set the default JDK to 17 for the entire pipeline
         jdk 'jdk17'
         maven 'maven3'
+        docker 'docker'
     }
 
     environment {
