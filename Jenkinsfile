@@ -9,14 +9,20 @@ pipeline {
                 sh 'java -version'
             }
         }
-    
-        tools {
-            jdk 'jdk11'
-            maven 'maven3'
-        }
 
-        environment {
-            SCANNER_HOME = tool 'SonarQube Scanner'
+        stage('Setup Tools and Environment') {
+            steps {
+                script {
+                    tools {
+                        jdk 'jdk11'
+                        maven 'maven3'
+                    }
+
+                    environment {
+                        SCANNER_HOME = tool 'SonarQube Scanner'
+                    }
+                }
+            }
         }
 
         stage('Git Checkout') {
