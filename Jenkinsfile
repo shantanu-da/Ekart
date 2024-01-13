@@ -61,6 +61,7 @@ pipeline {
                         def buildNumber = env.BUILD_NUMBER ?: 'latest'
                         sh "docker build -t shan123456/docker_demo -f docker/Dockerfile ."
                         sh "docker tag shan123456/docker_demo:latest shan123456/docker_demo:${buildNumber}"
+                        sh "docker login -u shan6101995@gmail.com -p shantanuu"
                         sh "docker push shan123456/docker_demo:${buildNumber}"
                         sh "docker push shan123456/docker_demo:latest"
                     }
