@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     tools {
-        // Set the default JDK to 17 for the entire pipeline
         jdk 'jdk17'
         maven 'maven3'
         dockerTool 'docker'
@@ -21,14 +20,12 @@ pipeline {
 
         stage('COMPILE') {
             steps {
-                // Compile stage uses the default JDK (jdk17)
                 sh "mvn clean compile -DskipTests=true"
             }
         }
 
         stage('OWASP Scan') {
             steps {
-                // Dependency check stage uses the default JDK (jdk17)
                 dependencyCheck additionalArguments: '--scan ./ ', odcInstallation: 'DP'
                 dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
             }
@@ -48,7 +45,6 @@ pipeline {
 
         stage('Build') {
             steps {
-                // Build stage uses the default JDK (jdk17)
                 sh "mvn clean package -DskipTests=true"
             }
         }
@@ -56,14 +52,24 @@ pipeline {
         stage('Docker Build & Push') {
             steps {
                 script {
-                    // Docker stage uses the default JDK (jdk17)
-                        withCredentials([usernamePassword(credentialsId: 'Dockerhub_login', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
+                    withCredentials([usernamePassword(credentialsId: 'Dockerhub_login', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
                         def buildNumber = env.BUILD_NUMBER ?: 'latest'
                         sh "docker build -t shan123456/docker_demo -f docker/Dockerfile ."
                         sh "docker tag shan123456/docker_demo:latest shan123456/docker_demo:${buildNumber}"
                         sh "docker login -u shan6101995@gmail.com -p shantanuu"
                         sh "docker push shan123456/docker_demo:${buildNumber}"
                         sh "docker push shan123456/docker_demo:latest"
+                    }
+                }
+            }
+        }
+
+        stage('Kubernetes Deploy') {
+            steps {
+                script {
+                    withKubeConfig(caCertificate: '', clusterName: 'opstree', contextName: '', credentialsId: 'kubeconfig', namespace: '', restrictKubeConfigAccess: false, serverUrl: 'https://786F9CDDB93243D55D83FCEE4C70905D.gr7.ap-southeast-2.eks.amazonaws.com') {
+                        def buildNumber = env.BUILD_NUMBER ?: 'latest'
+                        sh "kubectl apply -f kubernetes/deploymentservice.yaml"
                     }
                 }
             }
