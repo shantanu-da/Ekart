@@ -67,7 +67,7 @@ pipeline {
         stage('Kubernetes Deploy') {
             steps {
                 script {
-                        withKubeConfig([credentialsId: 'kubeconfig', serverUrl: 'https://786F9CDDB93243D55D83FCEE4C70905D.gr7.ap-southeast-2.eks.amazonaws.com']) {
+                        withKubeConfig([credentialsId: 'k8s-credetials', serverUrl: 'https://786F9CDDB93243D55D83FCEE4C70905D.gr7.ap-southeast-2.eks.amazonaws.com']) {
                         sh 'kubectl config view'
                         sh "kubectl apply -f kubernetes/deploymentservice.yaml"
                     }
