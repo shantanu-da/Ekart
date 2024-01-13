@@ -67,11 +67,12 @@ pipeline {
         stage('Kubernetes Deploy') {
             steps {
                 script {
-                        withKubeConfig(caCertificate: '', clusterName: 'opstree', contextName: '', credentialsId: 'kubeconfig', namespace: '', restrictKubeConfigAccess: true, serverUrl: '"https://786F9CDDB93243D55D83FCEE4C70905D.gr7.ap-southeast-2.eks.amazonaws.com"')                         def buildNumber = env.BUILD_NUMBER ?: 'latest'
-                        sh "kubectl apply -f kubernetes/deploymentservice.yaml"
+                        withKubeConfig(caCertificate: '', clusterName: 'opstree', contextName: '', credentialsId: 'kubeconfig', namespace: '', restrictKubeConfigAccess: true, serverUrl: '"https://786F9CDDB93243D55D83FCEE4C70905D.gr7.ap-southeast-2.eks.amazonaws.com"') {
+    // some block
+}                        sh "kubectl apply -f kubernetes/deploymentservice.yaml"
                     }
                 }
             }
         }        
     }
-}
+
