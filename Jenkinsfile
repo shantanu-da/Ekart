@@ -67,9 +67,9 @@ pipeline {
         stage('Kubernetes Deploy') {
             steps {
                 script {
-                        withKubeConfig([credentialsId: 'kubeconfig', serverUrl: 'https://786F9CDDB93243D55D83FCEE4C70905D.gr7.ap-southeast-2.eks.amazonaws.com', contextName: 'opstree-context']) {
+                        withKubeConfig([credentialsId: 'kubeconfig', serverUrl: 'https://786F9CDDB93243D55D83FCEE4C70905D.gr7.ap-southeast-2.eks.amazonaws.com']) {
                         sh 'kubectl config view'
-                        sh 'kubectl config current-context'
+                        sh 'kubectl config use-context arn:aws:eks:ap-southeast-2:442182381299:cluster/opstree'
                         sh "kubectl apply -f kubernetes/deploymentservice.yaml"
                     }
                 }
