@@ -68,6 +68,9 @@ pipeline {
             steps {
                 script {
                         withKubeConfig([credentialsId: 'kubeconfig', serverUrl: 'https://786F9CDDB93243D55D83FCEE4C70905D.gr7.ap-southeast-2.eks.amazonaws.com', contextName: 'opstree-context']) {
+                        sh 'kubectl config view'
+                        sh 'kubectl config current-context'
+                        sh 'kubectl config current-context --namespace'
                         sh "kubectl apply -f kubernetes/deploymentservice.yaml"
                     }
                 }
