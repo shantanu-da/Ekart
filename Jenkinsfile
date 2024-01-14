@@ -68,6 +68,20 @@ pipeline {
             steps {
                 script {
                         withKubeConfig([credentialsId: 'k8s-credetials', serverUrl: 'https://786F9CDDB93243D55D83FCEE4C70905D.gr7.ap-southeast-2.eks.amazonaws.com']) {
+                        sh 'cat $HOME/.kube/config'
+
+                    // List the current context
+                        sh 'kubectl config current-context'
+
+                    // Display cluster information
+                        sh 'kubectl cluster-info'
+
+                    // List available namespaces
+                        sh 'kubectl get ns'
+
+                    // Display the applied Kubernetes manifests
+                        sh 'ls -l kubernetes/'
+
                         sh 'kubectl config view'
                         sh "kubectl apply -f kubernetes/deploymentservice.yaml"
                     }
