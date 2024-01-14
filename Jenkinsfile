@@ -67,7 +67,7 @@ pipeline {
         stage('Kubernetes Deploy') {
             steps {
                 script {
-                        withKubeConfig([credentialsId: 'k8s-credetials', serverUrl: 'https://786F9CDDB93243D55D83FCEE4C70905D.gr7.ap-southeast-2.eks.amazonaws.com']) {
+                       kubeconfig(credentialsId: 'k8s-credetials', serverUrl: 'https://821FFEB51BA5C7923ABB0F8F82546BE9.yl4.ap-southeast-2.eks.amazonaws.com') {
                         sh 'cat $HOME/.kube/config'
 
                     // List the current context
