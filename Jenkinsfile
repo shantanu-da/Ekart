@@ -67,21 +67,10 @@ pipeline {
         stage('Kubernetes Deploy') {
             steps {
                 script {
+                       withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: 'opstree1', contextName: 'arn:aws:eks:ap-southeast-2:442182381299:cluster/opstree1', credentialsId: 'k8s-credetials', namespace: 'default', serverUrl: 'https://821FFEB51BA5C7923ABB0F8F82546BE9.yl4.ap-southeast-2.eks.amazonaws.com']]) {
                        kubeconfig(credentialsId: 'k8s-credetials', serverUrl: 'https://821FFEB51BA5C7923ABB0F8F82546BE9.yl4.ap-southeast-2.eks.amazonaws.com') {
-                        sh 'cat $HOME/.kube/config'
-
-                    // List the current context
-                        sh 'kubectl config current-context'
-
-                    // Display cluster information
-                        sh 'kubectl cluster-info'
-
-                    // List available namespaces
-                        sh 'kubectl get ns'
-
-                    // Display the applied Kubernetes manifests
-                        sh 'ls -l kubernetes/'
-
+                       withCredentials([string(credentialsId: 'k8s-credetials', variable: 'k8s')]) {
+                        sh 'cat $HOME/.kube/config'                
                         sh 'kubectl config view'
                         sh "kubectl apply -f kubernetes/deploymentservice.yaml"
                     }
