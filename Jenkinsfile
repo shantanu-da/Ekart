@@ -52,7 +52,7 @@ pipeline {
         stage('Docker Build & Push') {
             steps {
                 script {
-                    withDockerRegistry(credentialsId: 'dockerhub', url: 'https://hub.docker.com/') {
+                        withDockerRegistry(credentialsId: 'dockerhub', url: 'https://index.docker.io/v1/') {
                         def buildNumber = env.BUILD_NUMBER ?: 'latest'
                         sh "docker build -t shan123456/docker_demo -f docker/Dockerfile ."
                         sh "docker tag shan123456/docker_demo:latest shan123456/docker_demo:${buildNumber}"
