@@ -24,15 +24,13 @@ pipeline {
             }
         }
 
-        /*
-        stage('OWASP Scan') {
-            steps {
-                dependencyCheck additionalArguments: '--scan ./ ', odcInstallation: 'DP'
-                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
-            }
-        }
-        */
-
+        //stage('OWASP Scan') {
+         //   steps {
+         //       dependencyCheck additionalArguments: '--scan ./ ', odcInstallation: 'DP'
+         //       dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+         //   }
+       // }
+        
         stage('Static Code Analysis') {
             environment {
                 SONAR_URL = "http://52.63.226.147:9000"
