@@ -67,7 +67,6 @@ pipeline {
             steps {
                 script {
                     kubeconfig(credentialsId: 'kubernetes', serverUrl: '') {
-                        sh 'cat $HOME/.kube/config'
                         sh "kubectl apply -f kubernetes/deploymentservice.yaml"
                     }
                 }
