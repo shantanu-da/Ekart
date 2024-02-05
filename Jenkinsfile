@@ -24,13 +24,13 @@ pipeline {
             }
         }
 
-        //stage('OWASP Scan') {
-         //   steps {
-         //       dependencyCheck additionalArguments: '--scan ./ ', odcInstallation: 'DP'
-         //       dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
-         //   }
-       // }
-        
+        // stage('OWASP Scan') {
+        //    steps {
+        //        dependencyCheck additionalArguments: '--scan ./ ', odcInstallation: 'DP'
+        //        dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+        //    }
+        // }
+
         stage('Static Code Analysis') {
             environment {
                 SONAR_URL = "http://54.252.172.0:9000/"
@@ -52,7 +52,7 @@ pipeline {
         stage('Docker Build & Push') {
             steps {
                 script {
-                        withDockerRegistry(credentialsId: 'dockerhub', url: 'https://index.docker.io/v1/') {
+                    withDockerRegistry(credentialsId: 'dockerhub', url: 'https://index.docker.io/v1/') {
                         def buildNumber = env.BUILD_NUMBER ?: 'latest'
                         sh "docker build -t shan123456/docker_demo -f docker/Dockerfile ."
                         sh "docker tag shan123456/docker_demo:latest shan123456/docker_demo:${buildNumber}"
@@ -66,18 +66,12 @@ pipeline {
         stage('Kubernetes Deploy') {
             steps {
                 script {
-                        kubeconfig(credentialsId: 'kubernetes', serverUrl: '') {
-                       sh 'cat $HOME/.kube/config'
-                        sh 'kubectl config view'
+                    kubeconfig(credentialsId: 'kubernetes', serverUrl: '') {
+                        sh 'cat $HOME/.kube/config'
                         sh "kubectl apply -f kubernetes/deploymentservice.yaml"
-                            
-                            
-                               }
-                            }
-                        }
                     }
                 }
             }
-        }        
+        }
     }
 }
