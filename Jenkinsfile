@@ -7,9 +7,9 @@ pipeline {
     
     }
 
-    environment {
-        SCANNER_HOME = tool 'SonarQube Scanner'
-    }
+    //environment {
+    //    SCANNER_HOME = tool 'SonarQube Scanner'
+    //}
 
     stages {
         stage('Git Checkout') {
