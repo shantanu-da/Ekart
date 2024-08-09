@@ -7,9 +7,9 @@ pipeline {
     
     }
 
-    //environment {
-    //    SCANNER_HOME = tool 'SonarQube Scanner'
-    //}
+    environment {
+       SCANNER_HOME = tool 'SonarQube Scanner'
+    }
 
     stages {
         stage('Git Checkout') {
@@ -31,17 +31,17 @@ pipeline {
         //    }
         // }
 
-        // stage('Static Code Analysis') {
-        //     environment {
-        //         SONAR_URL = "http://54.252.172.0:9000/"
-        //     }
-        //     steps {
-        //         withCredentials([string(credentialsId: 'sonarQube-token', variable: 'sonarQube')]) {
-        //             echo "SonarQube Token: ${sonarQube}"
-        //             sh 'mvn sonar:sonar -Dsonar.login=$sonarQube -Dsonar.host.url=${SONAR_URL}'
-        //         }
-        //     }
-        // }
+        stage('Static Code Analysis') {
+            environment {
+                SONAR_URL = "http://54.252.172.0:9000/"
+            }
+            steps {
+                withCredentials([string(credentialsId: 'sonarQube-token', variable: 'sonarQube')]) {
+                    echo "SonarQube Token: ${sonarQube}"
+                    sh 'mvn sonar:sonar -Dsonar.login=$sonarQube -Dsonar.host.url=${SONAR_URL}'
+                }
+            }
+        }
 
         stage('Build') {
             steps {
