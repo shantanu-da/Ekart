@@ -23,13 +23,6 @@ pipeline {
             }
         }
 
-        // stage('OWASP Scan') {
-        //    steps {
-        //        dependencyCheck additionalArguments: '--scan ./ ', odcInstallation: 'DP'
-        //        dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
-        //    }
-        // }
-
         stage('Static Code Analysis') {
             environment {
                 SONAR_URL = "http://13.232.232.132:9000/"
