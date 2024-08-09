@@ -4,11 +4,10 @@ pipeline {
     tools {
         jdk 'jdk17'
         maven 'maven3'
-    
     }
 
     environment {
-       SCANNER_HOME = tool 'SonarQube Scanner'
+        SCANNER_HOME = tool 'SonarQube Scanner'
     }
 
     stages {
@@ -38,7 +37,7 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'sonarqube', variable: 'sonarqube')]) {
                     echo "SonarQube Token: ${sonarqube}"
-                    sh 'mvn sonar:sonar -Dsonar.login=$sonarQube -Dsonar.host.url=${SONAR_URL}'
+                    sh 'mvn sonar:sonar -Dsonar.login=${sonarqube} -Dsonar.host.url=${SONAR_URL}'
                 }
             }
         }
